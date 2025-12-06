@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Bot, User, Send, Loader2, CheckCircle2, Circle } from 'lucide-react';
+import { Bot, User, Send, Loader2, CheckCircle2, Circle, Mic, Square } from 'lucide-react';
 import { useAgentChat } from '@/hooks/useAgentChat';
 import { useTxFlow } from '@/hooks/useTxFlow';
 import { useHistory } from '@/hooks/useHistory';
+import { useAudioRecorder } from '@/hooks/useAudioRecorder';
 import { TokenSelectionCard } from './TokenSelectionCard';
 import { RouteSelectionCard } from './RouteSelectionCard';
 import { PortfolioDashboard } from './PortfolioDashboard';
@@ -15,6 +16,8 @@ export function Chat() {
     const { messages, sendMessage, isLoading, currentPlan, completedSteps } = useAgentChat();
     const { signAndSend, isSigning, txHash } = useTxFlow();
     const { addHistoryItem } = useHistory();
+    const { isRecording, startRecording, stopRecording } = useAudioRecorder();
+    const [isTranscribing, setIsTranscribing] = useState(false);
     const [input, setInput] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [currentTxDraft, setCurrentTxDraft] = useState<any>(null);
@@ -151,6 +154,37 @@ export function Chat() {
         updatedPlan.steps[stepIndex].status = 'pending';
 
         await sendMessage('Token selected', updatedPlan);
+    };
+
+    const handleVoiceToggle = async () => {
+        if (isRecording) {
+            // Stop recording
+            const audioBlob = await stopRecording();
+            if (audioBlob) {
+                setIsTranscribing(true);
+                try {
+                    const formData = new FormData();
+                    formData.append('file', audioBlob, 'recording.webm');
+
+                    const response = await fetch('/api/transcribe', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+                    if (data.text) {
+                        setInput((prev) => (prev ? `${prev} ${data.text}` : data.text));
+                    }
+                } catch (error) {
+                    console.error('Transcription error:', error);
+                } finally {
+                    setIsTranscribing(false);
+                }
+            }
+        } else {
+            // Start recording
+            await startRecording();
+        }
     };
 
     return (
@@ -322,15 +356,34 @@ export function Chat() {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Ask me anything..."
-                            className="w-full bg-transparent border-none py-4 pl-4 pr-14 text-white placeholder-gray-500 focus:ring-0 outline-none"
+                            className="w-full bg-transparent border-none py-4 pl-4 pr-24 text-white placeholder-gray-500 focus:ring-0 outline-none"
                         />
-                        <button
-                            type="submit"
-                            disabled={isLoading || !input.trim()}
-                            className="absolute right-2 p-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-lg text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-900/20"
-                        >
-                            <Send size={18} />
-                        </button>
+                        <div className="absolute right-2 flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={handleVoiceToggle}
+                                disabled={isLoading || isTranscribing}
+                                className={`p-2 rounded-lg transition-all ${isRecording
+                                    ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30 animate-pulse'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/10'
+                                    }`}
+                            >
+                                {isTranscribing ? (
+                                    <Loader2 size={18} className="animate-spin" />
+                                ) : isRecording ? (
+                                    <Square size={18} fill="currentColor" />
+                                ) : (
+                                    <Mic size={18} />
+                                )}
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={isLoading || !input.trim()}
+                                className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-lg text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-900/20"
+                            >
+                                <Send size={18} />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>

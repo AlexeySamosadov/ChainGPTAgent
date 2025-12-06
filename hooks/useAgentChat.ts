@@ -29,14 +29,18 @@ export function useAgentChat() {
     // Track completed steps for history
     const [completedSteps, setCompletedSteps] = useState<CompletedStep[]>([]);
 
-    const executeStep = async (text: string, planToExecute?: any) => {
+    const executeStep = async (text: string, planToExecute?: any, history: Message[] = []) => {
         setIsLoading(true);
         try {
+            // Filter history to last 6 messages to save tokens/size, excluding the current one if redundant
+            const recentHistory = history.slice(-6).map(m => ({ role: m.role, content: m.content }));
+
             const response = await axios.post('/api/agent', {
                 message: text,
                 userAddress: address,
                 chainId: chainId,
-                plan: planToExecute || currentPlan
+                plan: planToExecute || currentPlan,
+                history: recentHistory
             });
 
             const data = response.data;
@@ -104,7 +108,21 @@ export function useAgentChat() {
             setCurrentPlan(planUpdate);
         }
 
-        await executeStep(text, planUpdate);
+        let planToSend = planUpdate || currentPlan;
+
+        // If the current plan has failed OR is fully completed, we should reset it to allow replanning with context
+        if (!planUpdate && currentPlan) {
+            const hasFailed = currentPlan.steps.some((s: any) => s.status === 'failed');
+            const isCompleted = currentPlan.steps.every((s: any) => s.status === 'completed');
+
+            if (hasFailed || isCompleted) {
+                console.log('Previous plan finished (failed/completed). Resetting for new plan with context.');
+                planToSend = null;
+                setCurrentPlan(null);
+            }
+        }
+
+        await executeStep(text, planToSend, messages);
     };
 
     const clearCompletedSteps = useCallback(() => {

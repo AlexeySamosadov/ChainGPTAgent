@@ -24,8 +24,11 @@ export interface AgentPlan {
 }
 
 export class Planner {
-    async plan(text: string): Promise<AgentPlan> {
+    async plan(text: string, history: any[] = []): Promise<AgentPlan> {
         console.log('🧠 Planning with ChainGPT LLM for:', text);
+
+        // Format history for context
+        const contextStr = history.map((m: any) => `${m.role.toUpperCase()}: ${m.content}`).join('\n');
 
         const prompt = `
 You are an expert Web3 AI Agent Planner. Your job is to analyze the user's request and create a structured execution plan.
@@ -42,6 +45,10 @@ Rules:
 2. Return ONLY valid JSON. No markdown, no explanations.
 3. Structure: { "steps": [ { "type": "...", "description": "...", "params": {...} } ] }
 4. Handle currency units intelligently: "10 cents" -> "0.10", "half a BNB" -> "0.5".
+5. Use the provided Context to resolve ambiguity (e.g., "Then swap 50 cents" implies the tokens discussed previously).
+
+Context:
+${contextStr}
 
 User Request: "${text}"
 JSON Plan:

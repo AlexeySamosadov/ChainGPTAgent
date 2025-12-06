@@ -6,7 +6,7 @@ import { AccountMenu } from '@/components/AccountMenu';
 import { NetworkToggle } from '@/components/NetworkToggle';
 import { Sidebar } from '@/components/Sidebar';
 import { HistoryView } from '@/components/HistoryView';
-import { UnifiedAuthModal } from '@/components/UnifiedAuthModal';
+import { AuthModal } from '@/components/AuthModal';
 import { MobileNav } from '@/components/MobileNav';
 import { SettingsView } from '@/components/SettingsView';
 import { useAuth } from '@/hooks/useAuth';
@@ -88,7 +88,7 @@ export default function Home() {
       </div>
 
       {/* Auth Modal */}
-      <UnifiedAuthModal
+      <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />

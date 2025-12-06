@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useConnect, useDisconnect } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { User, LogOut, History, Settings, ChevronDown, Copy, Check, Wallet, Plus } from 'lucide-react';
 import { useAccountStatus } from '@/hooks/useAccountStatus';
 
@@ -47,32 +48,66 @@ export function AccountMenu({ onOpenAuth, onOpenHistory, onOpenSettings }: Accou
         setIsOpen(false);
     };
 
-    const handleConnectWallet = async () => {
-        // Find MetaMask or injected connector
-        const connector = connectors.find(c => c.id === 'injected' || c.id === 'metaMask');
-        if (connector) {
-            try {
-                await connect({ connector });
-            } catch (error) {
-                console.error('Failed to connect wallet:', error);
-            }
-        }
-    };
 
     const truncateAddress = (addr: string) => {
         return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
     };
 
-    // Not authenticated at all - show Sign In button
     if (!isSupabaseAuthenticated) {
         return (
-            <button
-                onClick={onOpenAuth}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium rounded-lg transition-all"
-            >
-                <User size={18} />
-                <span className="hidden sm:inline">Sign In</span>
-            </button>
+            <div className="flex items-center gap-2">
+                <ConnectButton.Custom>
+                    {({ account, chain, openAccountModal, openConnectModal, authenticationStatus, mounted }) => {
+                        const ready = mounted && authenticationStatus !== 'loading';
+                        const connected =
+                            ready &&
+                            account &&
+                            chain &&
+                            (!authenticationStatus ||
+                                authenticationStatus === 'authenticated');
+
+                        if (!ready) return null;
+
+                        if (connected) {
+                            return (
+                                <button
+                                    onClick={openAccountModal}
+                                    className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-lg transition-all"
+                                >
+                                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-[10px]">
+                                        {chain.iconUrl && (
+                                            <img
+                                                alt={chain.name ?? 'Chain icon'}
+                                                src={chain.iconUrl}
+                                                className="w-full h-full rounded-full"
+                                            />
+                                        )}
+                                    </div>
+                                    <span className="hidden sm:inline">{account.displayName}</span>
+                                    <ChevronDown size={14} className="text-gray-400" />
+                                </button>
+                            );
+                        }
+
+                        return (
+                            <button
+                                onClick={openConnectModal}
+                                className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-lg transition-all"
+                            >
+                                <Wallet size={18} />
+                                <span className="hidden sm:inline">Connect Wallet</span>
+                            </button>
+                        );
+                    }}
+                </ConnectButton.Custom>
+                <button
+                    onClick={onOpenAuth}
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium rounded-lg transition-all"
+                >
+                    <User size={18} />
+                    <span className="hidden sm:inline">Sign In</span>
+                </button>
+            </div>
         );
     }
 
@@ -162,13 +197,20 @@ export function AccountMenu({ onOpenAuth, onOpenHistory, onOpenSettings }: Accou
                                     )}
                                 </button>
                             ) : (
-                                <button
-                                    onClick={handleConnectWallet}
-                                    className="mt-3 w-full flex items-center justify-center gap-2 p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-blue-400"
-                                >
-                                    <Plus size={14} />
-                                    <span className="text-sm">Connect Wallet</span>
-                                </button>
+                                <ConnectButton.Custom>
+                                    {({ openConnectModal, mounted }) => {
+                                        if (!mounted) return null;
+                                        return (
+                                            <button
+                                                onClick={openConnectModal}
+                                                className="mt-3 w-full flex items-center justify-center gap-2 p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-blue-400"
+                                            >
+                                                <Plus size={14} />
+                                                <span className="text-sm">Connect Wallet</span>
+                                            </button>
+                                        );
+                                    }}
+                                </ConnectButton.Custom>
                             )}
                         </div>
 

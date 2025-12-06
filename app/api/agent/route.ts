@@ -7,7 +7,7 @@ import { defaultPolicy } from '@/lib/web3/policy';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { message, userAddress, executedSteps } = body;
+        const { message, userAddress, executedSteps, history } = body;
 
         if (!message) {
             return NextResponse.json({ error: 'Message is required' }, { status: 400 });
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         // 1. Plan (if not already executing a plan)
         let plan = body.plan;
         if (!plan) {
-            plan = await planner.plan(message);
+            plan = await planner.plan(message, history || []);
         }
 
         // 2. Execute Next Pending Step
@@ -88,13 +88,13 @@ export async function POST(request: Request) {
                         // For hackathon demo, we use the source code hash as identifier
                         // In production, this would go through a Solidity compiler (solc)
                         const sourceCode = generateStep.result.sourceCode;
-                        
+
                         // Create deployment bytecode from source (simplified for demo)
                         // Real implementation would use solc-js or API compilation
                         const { MOCK_TOKEN_BYTECODE } = await import('@/lib/web3/contracts/MockToken');
                         contractBytecode = MOCK_TOKEN_BYTECODE;
                         contractDescription = `Deploy: ${generateStep.result.name || 'Generated Contract'}`;
-                        
+
                         // Store source code reference for verification
                         step.params.sourceCode = sourceCode;
                         step.params.contractName = generateStep.result.name;
@@ -383,7 +383,8 @@ export async function POST(request: Request) {
                     break;
 
                 case 'general_chat':
-                    const answer = await chainGPT.generalChat(step.params.message);
+                    const historyStr = history ? history.map((m: any) => `${m.role.toUpperCase()}: ${m.content}`).join('\n') : '';
+                    const answer = await chainGPT.generalChat(step.params.message, historyStr);
                     responseData.message = answer;
                     break;
             }

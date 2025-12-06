@@ -1,16 +1,23 @@
 import { useState } from 'react';
-import { useWalletClient, useSendTransaction } from 'wagmi';
+import { useWalletClient, useSendTransaction, useAccount } from 'wagmi';
 import { quackClient } from '@/lib/web3/quack';
 
 export function useTxFlow() {
     const { data: walletClient } = useWalletClient();
+    const { isConnected } = useAccount();
     const { sendTransactionAsync } = useSendTransaction();
     const [isSigning, setIsSigning] = useState(false);
     const [txHash, setTxHash] = useState<string | null>(null);
 
     const signAndSend = async (txDraft: any, useQuack: boolean = false) => {
-        if (!walletClient) {
-            alert('Please connect your wallet');
+        if (!isConnected) {
+            alert('Please connect your wallet first');
+            return;
+        }
+
+        if (useQuack && !walletClient) {
+            console.error('Wallet connected but client not ready for Quack flow');
+            alert('Wallet client not ready for Quack signing. Please try again in a moment.');
             return;
         }
 

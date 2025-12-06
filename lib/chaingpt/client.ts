@@ -42,8 +42,12 @@ class ChainGPTClient {
 
   async generalChat(prompt: string, context?: string): Promise<string> {
     try {
+      const fullPrompt = context
+        ? `Context of previous conversation:\n${context}\n\nCurrent User Question: ${prompt}`
+        : prompt;
+
       const response = await this.client.post('/chat/stream', {
-        question: prompt,
+        question: fullPrompt,
         stream: false,
         model: 'general_assistant'
       });
