@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #2b6cee;
+  --color-safe: #00FF7F;
+  --color-danger: #DC143C;
+  --color-accent-purple: #BF40BF;
+  --color-background-dark: #0A0A0F;
+  --color-background-light: #f6f6f8;
+
+  --font-display: "Space Grotesk", sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: radial-gradient(circle at 50% 0%, #1a1b26 0%, #0D0E12 100%);
+  min-height: 100vh;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Responsive AccountMenu styles */
+@media (max-width: 640px) {
+  .account-menu-mobile {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .account-menu-dropdown-mobile {
+    right: 0;
+    top: 100%;
+    width: calc(100vw - 2rem);
+    max-width: 20rem;
+  }
+}
+
+/* RainbowKit button responsive adjustments */
+@media (max-width: 480px) {
+  [data-testid="rk-connect-button"] {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Safe area for mobile bottom navigation (notched phones) */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Portfolio Guardian Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2b6cee", // Electric Blue-like
+              "background-light": "#f6f6f8",
+              "background-dark": "#0A0A1A", // Deep Dark background
+              "safe": "#00FF7F", // Emerald Green
+              "danger": "#DC143C", // Crimson Red
+              "accent-purple": "#BF40BF" // Neon Purple
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark" style="background-image: radial-gradient(circle at top left, rgba(191, 64, 191, 0.1), transparent 30%), radial-gradient(circle at bottom right, rgba(43, 108, 238, 0.1), transparent 30%);">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 md:px-10 lg:px-20 xl:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col w-full max-w-[1200px] flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-4 md:px-10 py-3">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Portfolio Guardian</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-end items-center gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-white/70 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Scan</a>
+<a class="text-white/70 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Settings</a>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+<span class="truncate">Connect Wallet</span>
+</button>
+</div>
+</header>
+<main class="flex-1 mt-8 px-4 md:px-0">
+<div class="flex flex-wrap justify-between gap-3 mb-8">
+<h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">Portfolio Guardian Dashboard</h1>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Risk Score and Alerts -->
+<div class="lg:col-span-1 flex flex-col gap-8">
+<!-- Main Risk Score Card -->
+<div class="p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl" style="background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);">
+<p class="text-white/80 text-base font-medium leading-normal mb-4">Overall Wallet Risk Score</p>
+<div class="relative flex items-center justify-center my-4">
+<svg class="transform -rotate-90" height="200" viewbox="0 0 120 120" width="200">
+<circle cx="60" cy="60" fill="none" r="54" stroke="rgba(255, 255, 255, 0.1)" stroke-linecap="round" stroke-width="12"></circle>
+<circle cx="60" cy="60" fill="none" pathlength="339.292" r="54" stroke="url(#scoreGradient)" stroke-dasharray="339.292" stroke-dashoffset="67.8584" stroke-linecap="round" stroke-width="12"></circle>
+<defs>
+<lineargradient id="scoreGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#BF40BF;"></stop>
+<stop offset="100%" style="stop-color:#2b6cee;"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="absolute flex flex-col items-center justify-center">
+<span class="text-5xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #BF40BF, #2b6cee);">88</span>
+<span class="text-white/60 text-sm">/ 100</span>
+</div>
+</div>
+<p class="text-white/90 text-center text-sm font-normal leading-normal mt-4">AI-Generated Summary: Wallet health is optimal with no critical threats detected.</p>
+<button class="w-full mt-6 flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary/20 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/30 transition-colors">
+<span class="material-symbols-outlined text-base">refresh</span>
+<span class="truncate">Run New Scan</span>
+</button>
+</div>
+<!-- Critical Alerts Card -->
+<div class="p-6 rounded-xl border border-danger/50 bg-danger/10 backdrop-blur-xl">
+<h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-danger">warning</span>
+                                        Critical Alerts
+                                    </h3>
+<div class="flex flex-col gap-4 mt-2">
+<div class="p-4 rounded-lg bg-black/20 border border-danger/30">
+<p class="text-base font-bold text-danger">Honeypot Detected</p>
+<p class="text-sm text-white/80 mt-1">Contract 0x123...abc appears to be a honeypot. Do not interact.</p>
+<button class="mt-3 text-sm font-bold text-white/90 hover:text-white underline">Revoke Permissions</button>
+</div>
+<div class="p-4 rounded-lg bg-black/20 border border-danger/30">
+<p class="text-base font-bold text-danger">Infinite Approval Found</p>
+<p class="text-sm text-white/80 mt-1">Uniswap V2 has infinite approval for your USDT. Consider revoking.</p>
+<button class="mt-3 text-sm font-bold text-white/90 hover:text-white underline">Revoke Permissions</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Asset List -->
+<div class="lg:col-span-2">
+<div class="p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl h-full" style="background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);">
+<h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-4">Monitored Assets</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-white/10">
+<th class="p-3 text-sm font-medium text-white/60">Asset</th>
+<th class="p-3 text-sm font-medium text-white/60 text-right">Balance</th>
+<th class="p-3 text-sm font-medium text-white/60 text-right">Value</th>
+<th class="p-3 text-sm font-medium text-white/60 text-center">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-white/10">
+<td class="p-3 flex items-center gap-3">
+<img alt="BNB token logo" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU4eHWq735MsKx6CT4by8HQcnP8CIS6QmfppzqFCVXlFC3s2l_SOb6M5VACYjNa6gWgHSVTwAyh2UKRUGup4iwmTZMv3mFzlXSZQJ4Ys-gZHZ1r_z1G7tY4G2EH4VtRdMK-6UDg6c4qhXXkgQMLT6G88MfIHiFlIBHQyRRljUSiGf1FdRmH292EF_ezG5pM-e1jvJ5VXG2l-8pLL_7kU0eYsePYqLSRWrP3DEOOStfOcCuJsqnbTHbsxG4AvfX8r8VqY-jxxZMjYGM"/>
+<div>
+<p class="font-bold">BNB</p>
+<p class="text-sm text-white/60">Binance Coin</p>
+</div>
+</td>
+<td class="p-3 text-right">
+<p class="font-medium">12.45</p>
+</td>
+<td class="p-3 text-right">
+<p class="font-medium">$7,281.30</p>
+</td>
+<td class="p-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-safe/20 text-safe">Safe</span>
+</td>
+</tr>
+<tr class="border-b border-white/10">
+<td class="p-3 flex items-center gap-3">
+<img alt="USDT token logo" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1tpRqFdMmRTwGaN1fBw08f5ll1oEGkTj2wsfIEE8FGswy4yiUH_PbmaIEm9-iXQN1tGJ8HOZgCGorouzbasU33FYZKSHXExycayfGZwSqzDklRo0nq5rLRGziBj1TV01q7T-oiwAXtq5eqPdczQUNrjMgUpHRdHrTO3ehoKDt5k610-z1gOE8gDXhTbRliAKjVa2D18I2KctV7qHiLAIIkJblt-D5Wh5EGiMpN3qeKDyNI-aoTHHVBDF-LsvKMJtxuim7o1-2n9hi"/>
+<div>
+<p class="font-bold">USDT</p>
+<p class="text-sm text-white/60">Tether</p>
+</div>
+</td>
+<td class="p-3 text-right">
+<p class="font-medium">5,120.75</p>
+</td>
+<td class="p-3 text-right">
+<p class="font-medium">$5,120.75</p>
+</td>
+<td class="p-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-safe/20 text-safe">Safe</span>
+</td>
+</tr>
+<tr class="border-b border-white/10">
+<td class="p-3 flex items-center gap-3">
+<img alt="BTCB token logo" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDS1IO3iWXjlR6NWCpGALlOfXlquB7TDZvCqgLJ6qePdCtzEsB8yhOZye63Dd4XyvdhNfspkups63Fj5Z6c86beg3-hHI5J1iGAqJndIPonvd0vXYWe3fK6khU0UQh5sxBijueUYfScHkwWNa5FKCLNnEMxOAFvgWx_5ysdxQKDms98HaRm62aB1fCLTRG759Uy9377un4ZxR57rElYfEKXtguyRAhiTcHT5HdLBV7e8H4U9pA3fsZTmQJ0Nc6HASVfe4Ek_lnDKVrh"/>
+<div>
+<p class="font-bold">BTCB</p>
+<p class="text-sm text-white/60">Bitcoin BEP2</p>
+</div>
+</td>
+<td class="p-3 text-right">
+<p class="font-medium">0.082</p>
+</td>
+<td class="p-3 text-right">
+<p class="font-medium">$5,494.00</p>
+</td>
+<td class="p-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-safe/20 text-safe">Safe</span>
+</td>
+</tr>
+<tr>
+<td class="p-3 flex items-center gap-3">
+<img alt="FAKE token logo" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJeW0PyEzEvxDtTx-oNxO0JDnMpBO3q_bz6yaGViJoFf8JIUopKyuGPUv4bzfqLjiRpMcYvDMH6ZbhrI6n1n0fcwd8T_zjvpb6SgloJrkSWm9sFsXnwe0yDQyjJAqbUT_qfoiI6YnJZf9WBF6tcl1EpW9Y2IQvnUS-CCiJRxjGuaACbmLtMjOfPoqEukVIWgG4prWkh0citdNYenrLa4AdxNXH7W4vd9QK046b7_L4eUZ2can6a-kmakupIUY9UV8NBRR7YTGLQrrl"/>
+<div>
+<p class="font-bold">FAKE</p>
+<p class="text-sm text-white/60">Fake Token</p>
+</div>
+</td>
+<td class="p-3 text-right">
+<p class="font-medium">1,000,000</p>
+</td>
+<td class="p-3 text-right">
+<p class="font-medium">$12.50</p>
+</td>
+<td class="p-3 text-center">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-danger/20 text-danger">Suspicious</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

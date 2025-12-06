@@ -1,0 +1,3 @@
+Web3 Copilot Project for BNB Chain
+This is a placeholder knowledge base for the ChainGPT API key generation process.
+We are building an AI agent that integrates ChainGPT, Quack x402, and BNB Chain.

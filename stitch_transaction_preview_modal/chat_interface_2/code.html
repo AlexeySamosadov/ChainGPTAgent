@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chat Interface</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Fira+Code&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        .code-block {
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#00BFFF",
+              "background-light": "#f6f6f8",
+              "background-dark": "#0A0A1A",
+              "accent-purple": "#9D00FF",
+              "accent-green": "#00FF7F",
+              "accent-red": "#DC143C",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "mono": ["Fira Code", "monospace"],
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+            boxShadow: {
+                'glow-primary': '0 0 15px 2px rgba(0, 191, 255, 0.4)',
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-white/90">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<div class="flex h-full w-full">
+<!-- SideNavBar -->
+<aside class="flex w-64 flex-col bg-black/20 backdrop-blur-sm border-r border-white/10 p-4 shrink-0">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="ChainGPT logo, a stylized letter C with circuit patterns" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAjgdlA2GiNu8DcRdbwaeYok7QqRNFzkSdNldwn1a0BujuGSe1NxAw1vI1ee0lcDDxoWwEMwoM4CPEmA8ttAJc6jdJ5cT2FkYfxT99ZVNN39KJnjjPzvBRaZu5oJawEKwMX830FAtrNXIbym0Q8UpoESCC5_SPO6MfU-ml0lpGAtBWJNtWV2Qt0XYZV5XyROokGIjqGNrtUgN7oMmo55s3HxHwPsg4N5Thj_KkLMXdx7EWwlz50066Xtqf_kwT4fSD3LkleJlNSig7T");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold">ChainGPT</h1>
+<p class="text-white/60 text-sm font-normal">Web3 Copilot</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary border border-primary/50" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<p class="text-sm font-medium">Home</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-white/70">history</span>
+<p class="text-white/70 text-sm font-medium">History</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-white/70">account_balance_wallet</span>
+<p class="text-white/70 text-sm font-medium">Wallet</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-white/70">settings</span>
+<p class="text-white/70 text-sm font-medium">Settings</p>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Chat Area -->
+<main class="flex flex-1 flex-col">
+<div class="flex-1 overflow-y-auto p-6">
+<div class="mx-auto max-w-4xl space-y-8">
+<!-- Agent Welcome Message -->
+<div class="flex items-start gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0 border border-accent-purple/50" data-alt="ChainGPT logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD1OAeGKaavkJx3ESs7Es5H8uP25AB9sazD-Dqwa2Ae-Hr9YpoAd55mBHEicst8AvwoJTXf66wR9oVlxyGiDwL8bk9RlqUqULCYd5Rp8ALwZEfsZIZcs_AvQLglYUHi88d04DIVPZ3RxPbKj1UDkIeeKExxAMWgvV7TojmG55a64kP_a5qQoyU0-19Ao69SBkv7uvPp8wH-iNQ8uSDWaR4uKhlJkbnUeFLezp9ObLZ9_G1gzM0Aa_I865hgQBNGgTSK9tJm25GMqYhj");'></div>
+<div class="flex flex-1 flex-col gap-2 items-start">
+<p class="text-white/60 text-sm font-medium">ChainGPT Agent</p>
+<div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg rounded-tl-none p-4 max-w-xl">
+<p class="text-base font-normal leading-relaxed text-white/90">
+                                      Welcome! I'm your Web3 Copilot. How can I assist you today? Try asking me to 'Generate a token contract' or 'Audit this smart contract address'.
+                                    </p>
+</div>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex items-start gap-4 justify-end">
+<div class="flex flex-1 flex-col gap-2 items-end">
+<p class="text-white/60 text-sm font-medium">User</p>
+<div class="bg-primary/20 backdrop-blur-md border border-primary/30 rounded-lg rounded-tr-none p-4 max-w-xl">
+<p class="text-base font-normal leading-relaxed text-white">Generate a standard ERC20 token contract.</p>
+</div>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0 border border-primary/50" data-alt="User avatar with a blue and purple gradient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCXLD0H85er5uZMEA7RwfoedCHgtYTPeEn-qPem0jSKFmpFGlthK5V-d6jBC_fw_hgK-6zGPwDr3gt1O5uPXwNg0UyDvQ-7ywLmP9331KjNaDaddW58d8a5e0YyZOG_E9tAbx3drjiowA2O7Dke5eBZy6rElo6j7RMQW6_H9ZPE8wJnHMLjwqUIrboCG6NA3aQYAPcPhTbYUGX22UoLPaGTJerRdZCUjzNeda3M2TmnpmW3LgJyXTSE3F0tGPuExsqrx5IQ7E9petjy");'></div>
+</div>
+<!-- Agent Thinking State with Checklist -->
+<div class="flex items-start gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0 border border-accent-purple/50" data-alt="ChainGPT logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEcJLlgTl-q7uXMB4GP-xo-SwNM2uXfAepf26ZHQy615Bdd53olLEuwm-B-AubmmuFp6KqR-ksQRTm4J_ISYlzQDTYk1zPPp2FvJg5gA5sLr3qX83zdSmUAAh6Jdu6tLngMX3iGfBDvjdNwoHbXJhJt0xmjSiWwvQdWlUl47ZMBlfdYls57Bu7XRyxkjWk1bfFUHPmf1zPI_wUX2jkma9zky41UfAts_mkJ_-j2bpukm4EmHpws-5Zr6soLuCGb0mOf3f4P9ycxzvM");'></div>
+<div class="flex flex-1 flex-col gap-2 items-start">
+<p class="text-white/60 text-sm font-medium">ChainGPT Agent</p>
+<div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg rounded-tl-none p-4 max-w-xl w-full">
+<p class="text-base font-normal leading-relaxed text-white/90 mb-4">
+                                      Of course. I'm generating the contract now...
+                                    </p>
+<div class="space-y-3">
+<label class="flex items-center gap-x-3">
+<input checked="" class="h-5 w-5 rounded-md border-white/20 bg-transparent text-accent-green checked:bg-accent-green checked:border-accent-green focus:ring-0 focus:ring-offset-0 focus:border-white/20" disabled="" type="checkbox"/>
+<p class="text-white/90 text-base font-normal">Generate Code</p>
+</label>
+<label class="flex items-center gap-x-3 opacity-100">
+<svg class="animate-spin h-5 w-5 text-primary" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+<p class="text-white/90 text-base font-normal">Audit Contract</p>
+</label>
+<label class="flex items-center gap-x-3 opacity-50">
+<input class="h-5 w-5 rounded-md border-white/20 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:border-white/20" disabled="" type="checkbox"/>
+<p class="text-white/90 text-base font-normal">Prepare for Deployment</p>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Agent Solidity Code Block -->
+<div class="flex items-start gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0 border border-accent-purple/50" data-alt="ChainGPT logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmt-jvLy0ms8R_OCJvldYk6FFJkqnioolu3HAGD43L5-GvUXsJIg6IHW3b_CGx8j0UcBTp3cgP4aPfO72DpZqRFk2wRWGKig66BqXUfXJRtp9XCiLsRDW_EkiDAlY5sgCNtO8rK38OIOwTdtp-uw-g0Sv4q47zoPtEXaEHamMw2jqYUILGFHRyC8LSrCn1k-doehNx7Y5owU4zkE4cbh1E2AZjZTBHXtmsUJiAdwY7YdNrQ5jPlnhiCNvz4yLAKi9ryBrZdZKI0X2z");'></div>
+<div class="flex flex-1 flex-col gap-2 items-start">
+<p class="text-white/60 text-sm font-medium">ChainGPT Agent</p>
+<div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-lg w-full max-w-4xl font-mono text-sm overflow-hidden">
+<div class="flex justify-between items-center px-4 py-2 bg-white/5">
+<span class="text-white/50">Solidity</span>
+<button class="flex items-center gap-2 text-white/70 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-base">content_copy</span>
+                                            Copy
+                                        </button>
+</div>
+<pre class="p-4 overflow-x-auto text-white/90"><code class="language-solidity">// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract MyToken is ERC20 {
+    constructor() ERC20("MyToken", "MTK") {
+        _mint(msg.sender, 1000 * 10 ** decimals());
+    }
+}
+</code></pre>
+</div>
+</div>
+</div>
+<!-- Agent Risk Card -->
+<div class="flex items-start gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0 border border-accent-purple/50" data-alt="ChainGPT logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpeux16z5xoWRdjGXDhrJRIv8w1QzI-W9JP-7992tKxNN0bXbs3HinjSoHlsQqfqrQr5iWu9XvKgl72IcHDTtyA3JXI5acv3ML2zGm94Oy4WKaiY_923P9OIWHOdOcyYmGF1GTp6A1uE1xeJyOj9Thtn944u-1KvWyFw_8g-wWkriWvJjNR16m3xqpFwvdVEJS9mYKI9awb-8FDFyvOLEvcRmITI_fpGkzVJiF2so5F-uwn0oapg2fuUOKDlqo2af2iZvSFqrjwd5j");'></div>
+<div class="flex flex-1 flex-col gap-2 items-start">
+<p class="text-white/60 text-sm font-medium">ChainGPT Agent</p>
+<div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-4 max-w-xl w-full">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-full bg-accent-green/20">
+<span class="material-symbols-outlined text-accent-green">shield</span>
+</div>
+<div>
+<h3 class="font-bold text-accent-green">Low Risk Detected</h3>
+<p class="text-white/70 text-sm">Audit complete. The contract uses standard OpenZeppelin libraries.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Input Field -->
+<div class="px-6 pb-6 pt-4">
+<div class="relative mx-auto max-w-4xl">
+<form>
+<input class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-6 pr-16 text-white/90 placeholder:text-white/40 focus:ring-2 focus:ring-primary focus:border-primary shadow-glow-primary transition-shadow" placeholder="Message ChainGPT..." type="text"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 bg-primary rounded-lg text-white hover:bg-primary/90 transition-colors" type="submit">
+<span class="material-symbols-outlined">arrow_upward</span>
+</button>
+</form>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>
