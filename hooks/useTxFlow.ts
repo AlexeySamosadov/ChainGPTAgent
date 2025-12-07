@@ -15,7 +15,7 @@ export function useTxFlow() {
             return;
         }
 
-        if (useQuack && !walletClient) {
+        if (useQuack && (!walletClient || !walletClient.account)) {
             console.error('Wallet connected but client not ready for Quack flow');
             alert('Wallet client not ready for Quack signing. Please try again in a moment.');
             return;
@@ -28,8 +28,8 @@ export function useTxFlow() {
             if (useQuack) {
                 // Quack Sign-to-Pay Flow
                 const result = await quackClient.signAndExecute(
-                    walletClient,
-                    walletClient.account.address,
+                    walletClient!,
+                    walletClient!.account!.address,
                     {
                         to: txDraft.to,
                         data: txDraft.data,
