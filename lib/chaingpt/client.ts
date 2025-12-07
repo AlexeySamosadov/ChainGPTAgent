@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 // ChainGPT API Base URL (from docs: https://docs.chaingpt.org)
 const BASE_URL = 'https://api.chaingpt.org';
 
@@ -27,17 +25,32 @@ export interface GeneratedContract {
 
 class ChainGPTClient {
   private apiKey: string;
-  private client;
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.client = axios.create({
-      baseURL: BASE_URL,
+  }
+
+  private async post(endpoint: string, body: any): Promise<any> {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${this.apiKey}`,
       },
+      body: JSON.stringify(body),
     });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`ChainGPT API error: ${response.status} - ${errorText}`);
+    }
+
+    const text = await response.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      return text;
+    }
   }
 
   async generalChat(prompt: string, context?: string): Promise<string> {
@@ -46,12 +59,12 @@ class ChainGPTClient {
         ? `Context of previous conversation:\n${context}\n\nCurrent User Question: ${prompt}`
         : prompt;
 
-      const response = await this.client.post('/chat/stream', {
+      const response = await this.post('/chat/stream', {
         question: fullPrompt,
         stream: false,
         model: 'general_assistant'
       });
-      return typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+      return typeof response === 'string' ? response : JSON.stringify(response);
     } catch (error: any) {
       console.error('ChainGPT Chat Error:', error.response?.data || error.message);
       throw new Error('Failed to communicate with ChainGPT LLM');
@@ -60,13 +73,13 @@ class ChainGPTClient {
 
   async auditContract(sourceCode: string): Promise<AuditResult> {
     try {
-      const response = await this.client.post('/chat/stream', {
+      const response = await this.post('/chat/stream', {
         question: `Audit this Solidity smart contract code and identify security vulnerabilities. Provide a risk score (0-100) and a summary. Code:\n${sourceCode}`,
         stream: false,
         model: 'smart_contract_auditor'
       });
 
-      const text = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+      const text = typeof response === 'string' ? response : JSON.stringify(response);
 
       // Parse score from LLM response
       const score = this.parseAuditScore(text);
@@ -152,13 +165,13 @@ class ChainGPTClient {
 
   async generateContract(description: string): Promise<GeneratedContract> {
     try {
-      const response = await this.client.post('/chat/stream', {
+      const response = await this.post('/chat/stream', {
         question: `Generate a Solidity smart contract for: ${description}. Return the code in a markdown block.`,
         stream: false,
         model: 'smart_contract_generator'
       });
 
-      const text = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+      const text = typeof response === 'string' ? response : JSON.stringify(response);
 
       // Extract code block
       const codeMatch = text.match(/```solidity\n([\s\S]*?)```/) || text.match(/```\n([\s\S]*?)```/);
