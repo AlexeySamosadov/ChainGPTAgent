@@ -111,7 +111,7 @@ This project implements all "Must Have" requirements for the ChainGPT x Quack bo
 
 ### 🔗 Links
 
-- **GitHub Repository**: [GitHub Repository](https://github.com/YOUR_USERNAME/ChainGPTAgent) <!-- TODO: Replace with actual repo URL -->
+- **GitHub Repository**: [GitHub Repository](https://github.com/AlexeySamosadov/ChainGPTAgent)
 - **Live Demo**: [Live Demo](https://your-app.vercel.app) <!-- TODO: Replace with actual Vercel deployment URL -->
 - **Demo Video**: [Demo Video](https://youtube.com/watch?v=YOUR_VIDEO_ID) <!-- TODO: Replace with actual demo video URL -->
 
