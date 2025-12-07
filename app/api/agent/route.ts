@@ -4,6 +4,8 @@ import { chainGPT } from '@/lib/chaingpt/client';
 import { txBuilder } from '@/lib/web3/txBuilder';
 import { defaultPolicy } from '@/lib/web3/policy';
 
+export const runtime = 'edge';
+
 export async function POST(request: Request) {
     try {
         const body = await request.json();

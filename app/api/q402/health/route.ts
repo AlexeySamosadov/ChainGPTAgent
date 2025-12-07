@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 
 // Q402 Facilitator Health Check
+export const runtime = 'edge';
+
 export async function GET() {
     const sponsorKey = process.env.SPONSOR_PRIVATE_KEY || process.env.FACILITATOR_PRIVATE_KEY;
 

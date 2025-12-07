@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 // Q402 Verification Route
 // Verifies EIP-712 witness signature and EIP-7702 authorization
 
+export const runtime = 'edge';
+
 interface SignedPaymentPayload {
     witnessSignature: string;
     authorization: {

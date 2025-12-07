@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ethers } from 'ethers';
 import { defaultPolicy } from '@/lib/web3/policy';
 
+export const runtime = 'edge';
+
 // Q402 Settlement Route
 // Submits EIP-7702 transaction to the blockchain
 
